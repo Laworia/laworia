@@ -1,0 +1,83 @@
+loadstring(game:HttpGet("https://arcanecheats.xyz/api/matcha/uilib"))()
+repeat wait() until Arcane
+
+local Window = Arcane:CreateWindow("Juju", Vector2.new(650, 450), "Synthwave84")
+
+-- Tema renklerini pencere oluştuktan SONRA değiştir
+task.wait(0.1)  -- UI'ın yüklenmesi için kısa bekleme
+
+-- Arcane global tema ayarlarını değiştir
+if Arcane.Themes then
+    for themeName, themeData in pairs(Arcane.Themes) do
+        if themeData then
+            themeData.Accent = Color3.fromRGB(100, 200, 255)   -- Açık mavi slider
+            themeData.TextColor = Color3.fromRGB(135, 206, 250) -- Açık mavi yazı
+            themeData.Text = Color3.fromRGB(135, 206, 250)      -- Alternatif yazı parametresi
+            themeData.Primary = Color3.fromRGB(0, 0, 0)         -- Siyah arkaplan
+            themeData.MainColor = Color3.fromRGB(100, 200, 255) -- Açık mavi ana renk
+        end
+    end
+end
+
+-- Aktif temayı değiştir
+if Arcane.CurrentTheme then
+    Arcane.CurrentTheme.Accent = Color3.fromRGB(100, 200, 255)
+    Arcane.CurrentTheme.TextColor = Color3.fromRGB(135, 206, 250)
+    Arcane.CurrentTheme.Text = Color3.fromRGB(135, 206, 250)
+    Arcane.CurrentTheme.Primary = Color3.fromRGB(0, 0, 0)
+    Arcane.CurrentTheme.MainColor = Color3.fromRGB(100, 200, 255)
+end
+
+Window:CreateTabSection("Cheats")
+local Tab = Window:CreateTab("Exploits")
+local Sec = Window:CreateSection("Main", "Exploits")
+
+-- Logging & Notifications
+Arcane:Log("Juju has initialized successfully!", 2)
+Arcane:Notify("Welcome", "Enjoy using Juju", 5)
+
+-- UI Elements with State Management
+local T = Sec:AddToggle("Auto Kill", false, function(state) 
+    print("Kill Status: ", state) 
+end)
+
+local S = Sec:AddSlider("Kill Reach", {Min = 1, Max = 50, Default = 15, Callback = function(v) 
+    print("Reach: ", v) 
+end})
+
+local DS = Sec:AddDualSlider("Kill Delay Range", {Min = 0, Max = 1000, DefaultLow = 100, DefaultHigh = 500, Callback = function(l, h)
+    print("Delay set between: ", l, h)
+end})
+
+local D = Sec:AddDropdown("Weapon", {"Sword", "Bow", "Axe"}, "Sword", function(sel)
+    print("Selected: ", sel)
+end)
+
+local MD = Sec:AddMultipleDropdown("Ignore", {"NPCs", "Friends", "Bros"}, {}, function(tbl)
+    print("Ignored list updated")
+end)
+
+local TX = Sec:AddTextBox("Kill Message", "L", function(txt)
+    print("Message set to: ", txt)
+end)
+
+local CP = Sec:AddColorPicker("ESP Color", Color3.new(0,1,0), function(c)
+    print("Color updated")
+end)
+
+Sec:AddKeybind("Quick Kill", "X", function()
+    print("X Pressed")
+end, false)
+
+Sec:AddButton("State Check", function()
+    print("--- Juju Values ---")
+    print("Auto Kill:", T:GetValue())
+    print("Reach:", S:GetValue())
+    print("Dropdown:", D:GetValue())
+    print("TextBox:", TX:GetValue())
+    
+    -- Manually updating Dual Slider
+    DS:SetValues(200, 800)
+end)
+
+Window:Finalize()
